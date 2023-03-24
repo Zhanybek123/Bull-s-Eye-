@@ -48,7 +48,6 @@ class ViewController: UIViewController {
     
     private var maxScore: UILabel = {
         let score = UILabel()
-        
         score.text = "100"
         score.textColor = .black
         score.textAlignment = .right
@@ -115,18 +114,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .cyan
-        configureUI()
+        configureUILayouts()
         configure()
         
         
         // Mark: All buttons that configurations when touched
-        slider.addTarget(self, action: #selector(sliderButtonPressed), for: .touchUpInside)
         startOverBtn.addTarget(self, action: #selector(startOverPresses), for: .touchUpInside)
         hitMeButton.addTarget(self, action: #selector(hitMeButtonPressed), for: .touchUpInside)
+        infoButton.addTarget(self, action: #selector(infoButtonPressed), for: .touchUpInside)
     }
     
-    func configureUI() {
-        //        [roolsLabel, rootScore, minScore, maxScore, hitMeButton, startOverBtn, scoreLabel, scoreSum, roundLbl, roundSumLbl, infoButton] .forEach { view.addSubview($0) }
+    func configureUILayouts() {
         [roolsLabel, rootScore, hitMeButton, slider, minScore, maxScore, scoreLabel, scoreSum, roundLbl, roundSumLbl, startOverBtn, infoButton] .forEach { view.addSubview($0) }
         
         roolsLabel.anchor(top: view.topAnchor,
@@ -164,23 +162,45 @@ class ViewController: UIViewController {
                         width: 25,
                         height: 25)
         
-        maxScore.anchor(top: nil,
-                        left: nil,
-                        bottom: slider.topAnchor,
+        maxScore.anchor(bottom: slider.topAnchor,
                         right: slider.rightAnchor,
                         paddingBottom: 10,
                         width: 55,
                         height: 25)
         
-        scoreLabel.anchor(top: hitMeButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: scoreSum.leftAnchor, paddingTop: 100, paddingLeft: view.bounds.width/3, paddingBottom: 0, paddingRight: 10, width: 0, height: 0, enableInsets: false)
+        scoreLabel.anchor(top: hitMeButton.bottomAnchor,
+                          left: view.leftAnchor,
+                          right: scoreSum.leftAnchor,
+                          paddingTop: 100,
+                          paddingLeft: view.bounds.width/3,
+                          paddingRight: 10)
         
-        scoreSum.anchor(top: scoreLabel.topAnchor, left: scoreLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0, enableInsets: false)
+        scoreSum.anchor(top: scoreLabel.topAnchor,
+                        left: scoreLabel.rightAnchor)
         
         
-        roundLbl.anchor(top: scoreLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: roundSumLbl.leftAnchor, paddingTop: 20, paddingLeft: view.bounds.width/3, paddingBottom: 0, paddingRight: 10, width: 0, height: 0, enableInsets: false)
-        roundSumLbl.anchor(top: scoreLabel.bottomAnchor, left: roundLbl.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0, enableInsets: false)
-        startOverBtn.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 50, paddingRight: 0, width: 0, height: 0, enableInsets: false)
-        infoButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 50, paddingRight: 50, width: 34, height: 34, enableInsets: true)
+        roundLbl.anchor(top: scoreLabel.bottomAnchor,
+                        left: view.leftAnchor,
+                        right: roundSumLbl.leftAnchor,
+                        paddingTop: 20,
+                        paddingLeft: view.bounds.width/3,
+                        paddingRight: 10)
+        
+        roundSumLbl.anchor(top: scoreLabel.bottomAnchor,
+                           left: roundLbl.rightAnchor,
+                           paddingTop: 20)
+        
+        startOverBtn.anchor(left: view.leftAnchor,
+                            bottom: view.bottomAnchor,
+                            paddingLeft: 50,
+                            paddingBottom: 50)
+        
+        infoButton.anchor(bottom: view.bottomAnchor,
+                          right: view.rightAnchor,
+                          paddingBottom: 50,
+                          paddingRight: 50,
+                          width: 34,
+                          height: 34)
     }
     
     func configure() {
@@ -190,10 +210,6 @@ class ViewController: UIViewController {
         slider.maximumValue = 100
         slider.isContinuous = true
         slider.tintColor = UIColor.green
-    }
-    
-    @objc func sliderButtonPressed(_ sender: UISlider) {
-        //        print(sender)
     }
     
     @objc func startOverPresses() {
@@ -218,8 +234,7 @@ class ViewController: UIViewController {
             scoreGained = 3
             startAndFurtherScores = startAndFurtherScores + scoreGained
             scoreSum.text = "\(startAndFurtherScores)"
-        }
-        else if difference <= 5 {
+        } else if difference <= 5 {
             scoreGained = 2
             startAndFurtherScores = startAndFurtherScores + scoreGained
             scoreSum.text = "\(startAndFurtherScores)"
@@ -247,6 +262,13 @@ class ViewController: UIViewController {
         numberOfRounds += 1
         slider.value = 0
         rootScore.text = String(randomBeginningValue)
+    }
+    
+    @objc func infoButtonPressed() {
+        let vc = InfoView()
+        navigationController?.pushViewController(vc, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Go Home!", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .white
     }
 }
 
