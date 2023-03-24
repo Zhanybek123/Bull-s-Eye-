@@ -116,8 +116,8 @@ class ViewController: UIViewController {
         view.backgroundColor = .cyan
         configureUILayouts()
         configure()
-        
-        
+        title = "BULL's EYE :)"
+        navigationController?.navigationBar.titleTextAttributes = [ NSAttributedString.Key.foregroundColor : UIColor.brown]
         // Mark: All buttons that configurations when touched
         startOverBtn.addTarget(self, action: #selector(startOverPresses), for: .touchUpInside)
         hitMeButton.addTarget(self, action: #selector(hitMeButtonPressed), for: .touchUpInside)
